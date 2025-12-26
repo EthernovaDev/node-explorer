@@ -126,6 +126,14 @@ body::after {
   font-size: 0.95rem;
   text-transform: uppercase;
   box-shadow: 0 10px 30px rgba(34, 211, 238, 0.25);
+  overflow: hidden;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(125, 211, 252, 0.5));
 }
 
 .brand-title {
@@ -513,4 +521,5 @@ tr:last-child td {
     grid-column: span 1;
   }
 }
+
 
