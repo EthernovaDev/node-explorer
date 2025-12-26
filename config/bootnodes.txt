@@ -1,0 +1,6 @@
+# Add one enode per line. Lines starting with # are ignored.
+# Example:
+# enode://PUBKEY@IP:PORT?discport=PORT
+
+
+

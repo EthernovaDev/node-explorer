@@ -1,0 +1,28 @@
+{
+  "nodeBinaryPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node\\bin\\ethernova.exe",
+  "rpcUrl": "http://127.0.0.1:8545",
+  "apiHost": "127.0.0.1",
+  "apiPort": 9090,
+  "webHost": "0.0.0.0",
+  "webPort": 8088,
+  "apiProxyEnabled": true,
+  "p2pPort": 30303,
+  "maxPeers": 200,
+  "pollSeconds": 15,
+  "onlineWindowMinutes": 10,
+  "datadir": "C:\\Users\\admin\\Desktop\\ethernova-node-explorer\\data\\node-data",
+  "logDir": "C:\\Users\\admin\\Desktop\\ethernova-node-explorer\\logs",
+  "geoipCountryMmdb": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\geo\\GeoLite2-Country.mmdb",
+  "geoipAsnMmdb": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\geo\\GeoLite2-ASN.mmdb",
+  "enableExpansion": false,
+  "expansionRateLimitPerMin": 30,
+  "expansionMaxCandidates": 5000,
+  "autoExportEnabled": true,
+  "autoExportMinutes": 30,
+  "autoExportLimit": 200,
+  "autoExportOnlyOnline": true,
+  "autoExportBootnodesPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\config\\bootnodes.txt",
+  "autoExportStaticNodesPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\config\\static-nodes.json"
+}
+
+

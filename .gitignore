@@ -1,0 +1,11 @@
+node_modules/
+data/
+logs/
+geoip/
+*.pid
+*.log
+*.sqlite
+*.mmdb
+npm-debug.log
+
+

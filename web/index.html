@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ethernova Node Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-orb orb-3" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-mark">ENX</div>
+      <div>
+        <div class="brand-title">Ethernova Node Explorer</div>
+        <div class="brand-subtitle">Local peer map for your node</div>
+      </div>
+    </div>
+    <div class="status" id="statusBadge">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Starting</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="cards">
+      <div class="card">
+        <div class="card-label">Peers Now</div>
+        <div class="card-value" id="peersNow">--</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Nodes Seen Total</div>
+        <div class="card-value" id="nodesTotal">--</div>
+      </div>
+      <div class="card">
+        <div class="card-label" id="onlineLabel">Nodes Online</div>
+        <div class="card-value" id="nodesOnline">--</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Last Update</div>
+        <div class="card-value" id="lastUpdate">--</div>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="panel">
+        <div class="panel-header">Top Countries (online)</div>
+        <canvas id="chartCountries" height="160"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-header">Top ASNs (online)</div>
+        <canvas id="chartAsn" height="160"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-header">Top Clients</div>
+        <canvas id="chartClients" height="160"></canvas>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="control-group">
+        <label for="searchInput">Search</label>
+        <input id="searchInput" type="search" placeholder="node id, enode, IP, client">
+      </div>
+      <div class="control-group">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter">
+          <option value="online" selected>Online</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="clientFilter">Client</label>
+        <input id="clientFilter" type="text" placeholder="Geth, Nethermind">
+      </div>
+      <div class="control-group">
+        <label for="countryFilter">Country</label>
+        <input id="countryFilter" type="text" placeholder="US or Germany">
+      </div>
+      <div class="control-group">
+        <label for="asnFilter">ASN</label>
+        <input id="asnFilter" type="text" placeholder="AS12345">
+      </div>
+      <div class="control-group">
+        <label for="sortSelect">Sort</label>
+        <select id="sortSelect">
+          <option value="last_seen" selected>Last Seen</option>
+          <option value="first_seen">First Seen</option>
+          <option value="seen_count">Seen Count</option>
+          <option value="country_code">Country</option>
+          <option value="asn_number">ASN</option>
+          <option value="client_name">Client</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="pageSizeSelect">Page Size</label>
+        <select id="pageSizeSelect">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+      <div class="control-group toggle-group">
+        <label>Hide IP</label>
+        <button class="toggle" id="ipToggle" type="button" aria-pressed="true">
+          <span class="toggle-knob"></span>
+        </button>
+      </div>
+      <div class="control-group exports">
+        <label>Export</label>
+        <div class="export-buttons">
+          <a class="btn" id="exportTxt" href="#">TXT</a>
+          <a class="btn" id="exportJson" href="#">JSON</a>
+          <a class="btn" id="exportCsv" href="#">CSV</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>ASN</th>
+            <th>Client</th>
+            <th>IP</th>
+            <th>Port</th>
+            <th>Seen Count</th>
+            <th>First Seen</th>
+            <th>Last Seen</th>
+            <th>Enode</th>
+          </tr>
+        </thead>
+        <tbody id="nodesBody">
+          <tr>
+            <td colspan="9" class="empty">Waiting for data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="pagination">
+      <button class="btn" id="prevPage" type="button">Previous</button>
+      <div class="page-info" id="pageInfo">Page 1</div>
+      <button class="btn" id="nextPage" type="button">Next</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Local-only dashboard. RPC stays on 127.0.0.1.</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+

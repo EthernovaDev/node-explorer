@@ -1,0 +1,19 @@
+{
+  "name": "ethernova-node-explorer-collector",
+  "version": "0.1.0",
+  "description": "Local Ethernova node explorer collector and API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/static": "^7.0.2",
+    "fastify": "^4.27.0",
+    "maxmind": "^4.2.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
+
+
