@@ -1,5 +1,7 @@
 {
   "nodeBinaryPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node\\bin\\ethernova.exe",
+  "nodeStartBatPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node\\start-node.bat",
+  "nodeStartBatArgs": [],
   "rpcUrl": "http://127.0.0.1:8545",
   "apiHost": "127.0.0.1",
   "apiPort": 9090,
@@ -24,5 +26,6 @@
   "autoExportBootnodesPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\config\\bootnodes.txt",
   "autoExportStaticNodesPath": "C:\\Users\\admin\\Desktop\\Ethernova-Node-Explorer\\config\\static-nodes.json"
 }
+
 
 

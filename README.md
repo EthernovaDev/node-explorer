@@ -35,6 +35,8 @@ If the files are missing, the app will show `UNKNOWN` instead of crashing.
 Edit `config\app.config.json`:
 
 - `nodeBinaryPath`: path to `ethernova.exe`
+- `nodeStartBatPath`: optional path to a `.bat` that starts the node (overrides `nodeBinaryPath`)
+- `nodeStartBatArgs`: optional args array passed to the `.bat`
 - `rpcUrl`: must be `http://127.0.0.1:8545` (or another local port)
 - `apiPort`: collector API port (default 9090)
 - `webPort`: dashboard port (default 8088)
@@ -56,6 +58,8 @@ Edit `config\app.config.json`:
 Bootnodes go in `config\bootnodes.txt` (one enode per line, `#` comments allowed). See `config\README-BOOTNODES.md`.
 
 If `autoExportEnabled=true`, the collector will overwrite `bootnodes.txt` and create `static-nodes.json` at the configured paths every interval. Existing bootnodes are preserved and fresh enodes are appended (deduped and capped by `autoExportLimit`).
+
+If `nodeStartBatPath` is set, `start-node.ps1` runs that `.bat` and does not add the default CLI flags. Make sure your bat/script enables the admin RPC (`--http.api eth,net,web3,admin`) and uses the right bootnodes/config.
 
 ### LAN access (optional)
 
@@ -135,6 +139,7 @@ Port 30303 must allow **both TCP and UDP**. Run as Administrator:
 - `scripts\stop-all.ps1`: stops processes from PID files
 - `scripts\export-enodes.ps1`: exports enodes to data directory
 - `scripts\firewall-rules.ps1`: adds Windows firewall rules for TCP/UDP P2P
+
 
 
 
