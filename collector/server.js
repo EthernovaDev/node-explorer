@@ -764,14 +764,19 @@ async function main() {
 
     app.get('/config.js', async (req, reply) => {
       const requestHost = req.headers.host || `127.0.0.1:${webPort}`;
+      const proto = req.headers['x-forwarded-proto'] || 'http';
       const payload = {
-        apiBase: apiProxyEnabled ? `http://${requestHost}` : `http://${apiHost}:${apiPort}`,
+        apiBase: apiProxyEnabled ? `${proto}://${requestHost}` : `http://${apiHost}:${apiPort}`,
         pollSeconds: Number(config.pollSeconds || 15),
         onlineWindowMinutes: Number(config.onlineWindowMinutes || 10)
       };
       reply.header('cache-control', 'no-store');
       reply.type('application/javascript');
       reply.send(`window.APP_CONFIG = ${JSON.stringify(payload)};`);
+    });
+
+    app.get('/health', async (_req, reply) => {
+      reply.send({ status: 'ok' });
     });
 
     await app.register(fastifyStatic, {
