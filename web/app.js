@@ -55,6 +55,18 @@
   el.exportJson.href = `${API_PREFIX}/export/enodes.json`;
   el.exportCsv.href = `${API_PREFIX}/export/enodes.csv`;
 
+  // Update export links when client filter changes so exports match the view
+  function updateExportLinks() {
+    const client = (el.clientFilter && el.clientFilter.value) || '';
+    const suffix = client ? `?client=${encodeURIComponent(client)}` : '';
+    el.exportTxt.href = `${API_PREFIX}/export/enodes.txt${suffix}`;
+    el.exportJson.href = `${API_PREFIX}/export/enodes.json${suffix}`;
+    el.exportCsv.href = `${API_PREFIX}/export/enodes.csv${suffix}`;
+  }
+  if (el.clientFilter) {
+    el.clientFilter.addEventListener('change', updateExportLinks);
+  }
+
   let chartCountries = null;
   let chartAsn = null;
   let chartClients = null;

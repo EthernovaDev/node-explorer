@@ -386,15 +386,16 @@ async function main() {
     const limit = autoExportLimit;
     let rows = [];
 
+    // Only export verified Ethernova nodes, not random DHT peers
     if (autoExportOnlyOnline) {
       rows = await db.all(
-        'SELECT enode FROM nodes WHERE last_seen >= ? ORDER BY last_seen DESC LIMIT ?',
+        "SELECT enode FROM nodes WHERE client_name LIKE 'Ethernova/%' AND last_seen >= ? ORDER BY last_seen DESC LIMIT ?",
         cutoff,
         limit
       );
     } else {
       rows = await db.all(
-        'SELECT enode FROM nodes ORDER BY last_seen DESC LIMIT ?',
+        "SELECT enode FROM nodes WHERE client_name LIKE 'Ethernova/%' ORDER BY last_seen DESC LIMIT ?",
         limit
       );
     }
@@ -687,19 +688,42 @@ async function main() {
       };
     });
 
+    // Build export query with optional client filter.
+    // Defaults to Ethernova-only so the export is not polluted with
+    // random DHT nodes from other networks (Geth, PulseChain, etc.).
+    function exportQuery(query) {
+      const client = query.client ?? 'Ethernova';
+      const onlyOnline = query.status === 'online';
+      const where = [];
+      const params = [];
+      if (client !== '*') {
+        where.push('client_name LIKE ?');
+        params.push(`${client}/%`);
+      }
+      if (onlyOnline) {
+        where.push('last_seen >= ?');
+        params.push(Date.now() - 10 * 60 * 1000);
+      }
+      const clause = where.length ? `WHERE ${where.join(' AND ')}` : '';
+      return { sql: `SELECT enode FROM nodes ${clause} ORDER BY last_seen DESC`, params };
+    }
+
     app.get('/api/export/enodes.txt', async (req, reply) => {
-      const rows = await db.all('SELECT enode FROM nodes ORDER BY last_seen DESC');
+      const { sql, params } = exportQuery(req.query);
+      const rows = await db.all(sql, ...params);
       const payload = rows.map(row => row.enode).join('\n');
       reply.type('text/plain').send(payload);
     });
 
     app.get('/api/export/enodes.json', async (req, reply) => {
-      const rows = await db.all('SELECT enode FROM nodes ORDER BY last_seen DESC');
+      const { sql, params } = exportQuery(req.query);
+      const rows = await db.all(sql, ...params);
       reply.send(rows.map(row => row.enode));
     });
 
     app.get('/api/export/enodes.csv', async (req, reply) => {
-      const rows = await db.all('SELECT enode FROM nodes ORDER BY last_seen DESC');
+      const { sql, params } = exportQuery(req.query);
+      const rows = await db.all(sql, ...params);
       const lines = ['enode'];
       for (const row of rows) {
         const value = String(row.enode || '').replace(/"/g, '""');

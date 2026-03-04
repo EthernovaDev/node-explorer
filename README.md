@@ -79,13 +79,14 @@ When `enableExpansion=true`, the collector will enqueue newly seen enodes and ca
 
 1. Edit `config\app.config.json`
 2. Edit `config\bootnodes.txt`
-3. Start everything:
+3. Start your Ethernova node using your own script or bat (RPC must be on `127.0.0.1`).
+4. Start the explorer:
 
 ```
 .\scripts\start-all.ps1
 ```
 
-4. Open `http://localhost:8088`
+5. Open `http://localhost:8088`
 
 ### Stop
 
@@ -133,12 +134,13 @@ Port 30303 must allow **both TCP and UDP**. Run as Administrator:
 
 ## Scripts
 
-- `scripts\start-all.ps1`: validates Node.js, installs deps if missing, starts node + dashboard
+- `scripts\start-all.ps1`: validates Node.js, installs deps if missing, starts dashboard only (node must be started separately)
 - `scripts\start-node.ps1`: starts ethernova node (RPC bound to localhost)
 - `scripts\start-dashboard.ps1`: starts collector + web UI
 - `scripts\stop-all.ps1`: stops processes from PID files
 - `scripts\export-enodes.ps1`: exports enodes to data directory
 - `scripts\firewall-rules.ps1`: adds Windows firewall rules for TCP/UDP P2P
+
 
 
 

@@ -25,7 +25,8 @@ if (-not (Test-Path (Join-Path $collectorDir 'node_modules'))) {
   Pop-Location
 }
 
-& (Join-Path $PSScriptRoot 'start-node.ps1') -ConfigPath $ConfigPath
+Write-Host 'Node is not started by this script. Start your Ethernova node separately.'
 & (Join-Path $PSScriptRoot 'start-dashboard.ps1') -ConfigPath $ConfigPath
+
 
 
