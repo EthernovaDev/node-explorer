@@ -473,10 +473,13 @@ async function main() {
     }
   }
 
+  // Default filter: only show Ethernova nodes in stats/dashboard.
+  const DEFAULT_CLIENT_FILTER = "Ethernova/%";
+
   async function getStats() {
     const cutoff = Date.now() - onlineWindowMs;
-    const totalRow = await db.get('SELECT COUNT(*) AS count FROM nodes');
-    const onlineRow = await db.get('SELECT COUNT(*) AS count FROM nodes WHERE last_seen >= ?', cutoff);
+    const totalRow = await db.get('SELECT COUNT(*) AS count FROM nodes WHERE client_name LIKE ?', DEFAULT_CLIENT_FILTER);
+    const onlineRow = await db.get('SELECT COUNT(*) AS count FROM nodes WHERE client_name LIKE ? AND last_seen >= ?', DEFAULT_CLIENT_FILTER, cutoff);
 
     const countries = await db.all(
       `SELECT
@@ -485,10 +488,12 @@ async function main() {
         COUNT(*) AS total,
         SUM(CASE WHEN last_seen >= ? THEN 1 ELSE 0 END) AS online
        FROM nodes
+       WHERE client_name LIKE ?
        GROUP BY country_code, country_name
        ORDER BY online DESC, total DESC
        LIMIT 10`,
-      cutoff
+      cutoff,
+      DEFAULT_CLIENT_FILTER
     );
 
     const asns = await db.all(
@@ -498,10 +503,12 @@ async function main() {
         COUNT(*) AS total,
         SUM(CASE WHEN last_seen >= ? THEN 1 ELSE 0 END) AS online
        FROM nodes
+       WHERE client_name LIKE ?
        GROUP BY asn_number, asn_org
        ORDER BY online DESC, total DESC
        LIMIT 10`,
-      cutoff
+      cutoff,
+      DEFAULT_CLIENT_FILTER
     );
 
     const clients = await db.all(
@@ -509,9 +516,11 @@ async function main() {
         COALESCE(client_name, 'UNKNOWN') AS client,
         COUNT(*) AS count
        FROM nodes
+       WHERE client_name LIKE ?
        GROUP BY client_name
        ORDER BY count DESC
-       LIMIT 10`
+       LIMIT 10`,
+      DEFAULT_CLIENT_FILTER
     );
 
     return {
@@ -605,9 +614,11 @@ async function main() {
         params.push(value, value, value, value);
       }
 
-      if (query.client) {
+      // Default to Ethernova nodes only; pass ?client=* to see all
+      const clientFilter = query.client ?? 'Ethernova';
+      if (clientFilter !== '*') {
         where.push('client_name LIKE ?');
-        params.push(`%${query.client}%`);
+        params.push(`${clientFilter}/%`);
       }
 
       if (query.country) {
